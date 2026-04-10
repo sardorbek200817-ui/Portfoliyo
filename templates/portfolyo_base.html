@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="uz" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Dasturchi | Portfolio</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: '#050505',
+                        accent: '#6366f1',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root { --accent: #6366f1; }
+        body { background-color: #050505; color: #fff; transition: all 0.3s ease; overflow-x: hidden; }
+        
+        /* Kun/Tun rejimi uchun to'liq tuzatishlar */
+        body.light { background-color: #f9fafb; color: #111827; }
+        body.light #navbar { background-color: rgba(249, 250, 251, 0.8); }
+        body.light section { background-color: #f9fafb !important; }
+        body.light .glass { background: rgba(0, 0, 0, 0.05); border-color: rgba(0, 0, 0, 0.1); color: #111; }
+        body.light .text-gray-400, body.light .text-gray-500, body.light .text-gray-600 { color: #4b5563; }
+        body.light .text-white, body.light h1, body.light h2, body.light h4, body.light h5 { color: #111; }
+        body.light .bg-dark { background-color: #f3f4f6 !important; }
+
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-hover:hover { background: rgba(255, 255, 255, 0.06); border-color: rgba(99, 102, 241, 0.4); }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        .clip-text { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
+        .btn-glow { transition: 0.5s; position: relative; overflow: hidden; }
+        .btn-glow:hover { box-shadow: 0 0 20px rgba(99, 102, 241, 0.6); }
+
+        .project-card img { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .project-card:hover img { transform: scale(1.1); }
+
+        #custom-cursor {
+            width: 20px; height: 20px;
+            background: white; border-radius: 50%;
+            position: fixed; top: 0; left: 0;
+            pointer-events: none; z-index: 9999;
+            mix-blend-mode: difference;
+        }
+        #testimonials-container { max-height: 450px; overflow-y: auto; padding-right: 10px; }
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent selection:text-white">
+
+    <div id="custom-cursor" class="hidden md:block"></div>
+
+    <div id="loader" class="fixed inset-0 z-[100] flex items-center justify-center bg-dark">
+        <div class="text-center">
+            <div class="clip-text">
+                <h1 id="loader-text" class="text-3xl md:text-5xl font-display font-bold italic tracking-tighter translate-y-full uppercase">
+                    RAVSHANOV <span class="text-accent">OTABEK</span> PORTFOLIO
+                </h1>
+            </div>
+            <div class="w-full h-[2px] bg-white/10 mt-4 relative overflow-hidden">
+                <div id="loader-bar" class="absolute inset-0 bg-accent -translate-x-full"></div>
+            </div>
+        </div>
+    </div>
+
+<nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] py-8">
+    <div class="container mx-auto px-6 flex justify-between items-center relative">
+        
+        <a href="#" class="group relative text-2xl font-display font-extrabold tracking-tighter overflow-hidden">
+            <span class="inline-block transition-transform duration-500 group-hover:-translate-y-full">R.OTABEK<span class="text-accent">.</span></span>
+            <span class="absolute left-0 top-full inline-block transition-transform duration-500 group-hover:-translate-y-full text-accent italic">PORTFOLIO</span>
+        </a>
+        
+        <div class="hidden md:flex items-center glass px-2 py-2 rounded-full border border-white/5 relative shadow-2xl">
+            <div id="nav-indicator" class="absolute bg-white/10 rounded-full transition-all duration-500 ease-out opacity-0"></div>
+            
+            <div class="flex items-center relative z-10">
+                <a href="#about" class="nav-item px-6 py-2 text-[10px] uppercase font-bold tracking-[0.2em] hover:text-accent transition-colors duration-300">Men Haqimda</a>
+                <a href="#work" class="nav-item px-6 py-2 text-[10px] uppercase font-bold tracking-[0.2em] hover:text-accent transition-colors duration-300">Loyihalar</a>
+                <a href="#skills" class="nav-item px-6 py-2 text-[10px] uppercase font-bold tracking-[0.2em] hover:text-accent transition-colors duration-300">Ko'nikmalar</a>
+                <a href="#contact" class="nav-item px-6 py-2 text-[10px] uppercase font-bold tracking-[0.2em] hover:text-accent transition-colors duration-300">Aloqa</a>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <button id="theme-toggle" class="w-12 h-12 glass rounded-full flex items-center justify-center text-xl hover:scale-110 active:scale-90 transition-all duration-300 group">
+                <span class="group-hover:rotate-[360deg] transition-transform duration-700">🌓</span>
+            </button>
+            
+            <a href="#contact" class="group relative hidden sm:flex items-center justify-center px-8 py-3 bg-white text-black text-[10px] font-extrabold uppercase tracking-widest rounded-full overflow-hidden transition-all duration-500 hover:text-white">
+                <div class="absolute inset-0 bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
+                <span class="relative z-10">Hozirgi qilayotgan loyiham</span>
+            </a>
+        </div>
+    </div>
+</nav>
+
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-accent/20 rounded-full blur-[120px] animate-pulse"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] animate-pulse" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10 text-center">
+            <div class="clip-text mb-4">
+                <span class="hero-stagger block text-accent font-mono tracking-[0.3em] text-sm uppercase opacity-0">Muhandislik va Mukammallik</span>
+            </div>
+            <div class="clip-text">
+                <h1 class="hero-stagger text-6xl md:text-8xl lg:text-9xl font-display font-extrabold tracking-tighter leading-[0.9] opacity-0">
+                    Mukammal <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-400 to-accent">Ilovalar</span> Yarataman
+                </h1>
+            </div>
+            <p class="hero-stagger max-w-2xl mx-auto text-gray-400 text-lg mt-8 mb-10 opacity-0 font-light">
+                Yuqori darajadagi foydalanuvchi interfeyslari va kuchli backend tizimlariga ixtisoslashgan dasturchi.
+            </p>
+            <div class="hero-stagger flex flex-wrap justify-center gap-6 opacity-0">
+                <a href="#work" class="px-10 py-4 bg-accent text-white rounded-xl font-bold transition-transform hover:scale-105 active:scale-95 shadow-lg shadow-accent/20">Ishlarimni ko'rish</a>
+                <a href="#contact" class="px-10 py-4 glass text-white rounded-xl font-bold transition-all hover:bg-white/10 border border-white/10">Bog'lanish</a>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-40">
+            <span class="text-[10px] uppercase tracking-[0.3em] rotate-90 mb-8">Pastga</span>
+            <div class="w-[1px] h-12 bg-gradient-to-b from-white to-transparent"></div>
+        </div>
+    </section>
+
+    <section id="about" class="py-32 relative bg-[#080808]">
+        <div class="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-start">
+            <div class="reveal relative group md:sticky md:top-32">
+                <div class="absolute -inset-4 bg-accent/20 rounded-2xl blur-2xl opacity-0 group-hover:opacity-100 transition duration-1000"></div>
+
+                {% if portfolyo.img %}
+                <img src={{portfolyo.img.url}} class="relative rounded-2xl grayscale hover:grayscale-0 transition-all duration-700 shadow-2xl" alt="Mening rasmim">
+                {% endif %}
+
+            </div>
+            <div class="reveal space-y-12">
+                <div>
+                    <h3 class="text-accent font-mono text-sm mb-4 uppercase tracking-widest italic">Men haqimda malumot</h3>
+                    <h2 class="text-4xl md:text-5xl font-display font-bold mb-8 tracking-tight leading-tight">Creativity<span class="italic font-light">  in</span><span class="text-accent">  Code</span></h2>
+                    <p class="text-gray-400 text-lg leading-relaxed mb-6 font-light">
+                        Salom! Men ijodiy yechimlar va yuqori texnologiyalarni birlashtirishga ishtiyoqmand dasturchiman. Har bir pikselning o'z maqsadi bo'lishi kerak deb hisoblayman va nafaqat vizual ko'rinishi chiroyli, balki funksional jihatdan mukammal raqamli mahsulotlar yarataman.
+                    </p>
+                </div>
+
+                <div class="glass p-8 rounded-3xl space-y-6">
+                    <h4 class="text-xl font-bold uppercase tracking-widest text-white border-b border-white/10 pb-4">Shaxsiy profil</h4>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 text-sm font-light text-gray-300">
+                        <div>
+                            <span class="block text-gray-500 font-mono text-xs uppercase tracking-wider mb-1">To'liq ism-familiya:</span>
+                            Ravshanov Otabek
+                        </div>
+                        <div>
+                            <span class="block text-gray-500 font-mono text-xs uppercase tracking-wider mb-1">Hozirgi yashash joyim:</span>
+                            Ozbekiston tumani qushqonoq qishlogi
+                        </div>
+                        <div>
+                            <span class="block text-gray-500 font-mono text-xs uppercase tracking-wider mb-1">Yilim va tugilganlik sanam:</span>
+                            2008
+                        </div>
+                        <div>
+                            <span class="block text-gray-500 font-mono text-xs uppercase tracking-wider mb-1">Hozirgi ish joyim:</span>
+                            Qoqon
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <h4 class="text-xl font-bold uppercase tracking-widest text-white border-b border-white/10 pb-4">Kasbiy Tajriba</h4>
+                    
+                    <div class="space-y-4 text-gray-400 text-sm leading-relaxed font-light">
+                        <p>
+                            Men asosan <span class="text-white font-medium">Django</span>, <span class="text-white font-medium">React</span> va <span class="text-white font-medium">GSAP</span> texnologiyalari bilan ishlayman. Murakkab loyihalarda muvaffaqiyatli qatnashganman va jamoada ishlashda katta tajribam bor.
+                        </p>
+                        <p>
+                            Kasbiy faoliyatim davomida kiberxavfsizlik asoslari va foydalanuvchi tajribasini (UX) yaxshilashga alohida e'tibor berib kelaman. Doimiy ravishda o'z ustimda ishlayman va yangi texnologiyalarni tez o'zlashtiraman.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-8 pt-8 border-t border-white/10">
+                    <div>
+                        <span class="block text-4xl font-display font-bold text-white tracking-tighter">05+</span>
+                        <span class="text-xs text-gray-500 uppercase tracking-widest">Yillik tajriba</span>
+                    </div>
+                    <div>
+                        <span class="block text-4xl font-display font-bold text-white tracking-tighter">X+</span>
+                        <span class="text-xs text-gray-500 uppercase tracking-widest">Tugallangan loyihalar</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="work" class="py-32 bg-dark">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+                <div class="reveal">
+                    <h2 class="text-5xl md:text-7xl font-display font-bold tracking-tighter">LOYIHALAR<span class="text-accent">.</span></h2>
+                </div>
+                <div class="reveal flex gap-4">
+                    <button class="px-6 py-2 glass rounded-full text-xs font-bold hover:bg-accent transition-colors">BARCHASI</button>
+                    <!-- <button class="px-6 py-2 rounded-full text-xs font-bold text-gray-500 hover:text-white transition-colors">UI/UX</button>
+                    <button class="px-6 py-2 rounded-full text-xs font-bold text-gray-500 hover:text-white transition-colors">DASTURLASH</button> -->
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="project-card reveal group relative overflow-hidden rounded-3xl glass p-4">
+                    <div class="relative overflow-hidden rounded-2xl aspect-[16/10]">
+                        <img src="https://cdn.dribbble.com/userupload/47245540/file/08642406e168663732ea85c3ef0e8dea.png?resize=752x&vertical=center" class="w-full h-full object-cover" alt="Ish">
+                        <div class="absolute inset-0 bg-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                            <span class="bg-white text-black px-8 py-3 rounded-full font-bold scale-90 group-hover:scale-100 transition-transform"><a href="https://brittanychiang.com/">Loyihani korish</a></span>
+                        </div>
+                    </div>
+                    <div class="py-6 px-2">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="text-2xl font-display font-bold">Otahonni loyihasi</h4>
+                            <span class="text-xs font-mono text-gray-500">2026</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="text-[10px] border border-white/10 px-3 py-1 rounded-full text-gray-400">Yangi loyiha</span>
+                            <span class="text-[10px] border border-white/10 px-3 py-1 rounded-full text-gray-400">DJANGO</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card reveal group relative overflow-hidden rounded-3xl glass p-4 md:translate-y-20">
+                    <div class="relative overflow-hidden rounded-2xl aspect-[16/10]">
+                        <img src="https://cdn.dribbble.com/userupload/47245540/file/08642406e168663732ea85c3ef0e8dea.png?resize=752x&vertical=center" class="w-full h-full object-cover" alt="Ish">
+                        <div class="absolute inset-0 bg-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                            <span class="bg-white text-black px-8 py-3 rounded-full font-bold scale-90 group-hover:scale-100 transition-transform"><a href="https://brittanychiang.com/">Loyihani korish</a></span>
+                        </div>
+                    </div>
+                    <div class="py-6 px-2">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="text-2xl font-display font-bold">Otahonni loyihasi</h4>
+                            <span class="text-xs font-mono text-gray-500">2026</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="text-[10px] border border-white/10 px-3 py-1 rounded-full text-gray-400">Tugallangan loyiha</span>
+                            <span class="text-[10px] border border-white/10 px-3 py-1 rounded-full text-gray-400">Tugallangan loyiha</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-32 relative overflow-hidden">
+        <div class="container mx-auto px-6">
+            <h3 class="reveal text-center text-accent font-mono text-sm mb-4 uppercase tracking-[0.3em]">My Toolkit</h3>
+            <h2 class="reveal text-center text-4xl md:text-6xl font-display font-bold mb-20 tracking-tighter">ASOSIY KO'NIKMALAR.</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="reveal glass-hover glass p-8 rounded-2xl text-center group transition-all duration-500">
+                    <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🐍</div>
+                    <h5 class="font-bold text-sm tracking-widest uppercase">Django</h5>
+                </div>
+                <div class="reveal glass-hover glass p-8 rounded-2xl text-center group transition-all duration-500">
+                    <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">⚡</div>
+                    <h5 class="font-bold text-sm tracking-widest uppercase">Tailwind CSS</h5>
+                </div>
+                <div class="reveal glass-hover glass p-8 rounded-2xl text-center group transition-all duration-500">
+                    <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🎭</div>
+                    <h5 class="font-bold text-sm tracking-widest uppercase">C++</h5>
+                </div>
+                <div class="reveal glass-hover glass p-8 rounded-2xl text-center group transition-all duration-500">
+                    <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">⚛️</div>
+                    <h5 class="font-bold text-sm tracking-widest uppercase">React JS</h5>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="py-20 bg-dark/50">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-10 items-start">
+                <div class="reveal space-y-6 order-2 md:order-1">
+                    <h2 class="text-4xl font-display font-bold tracking-tighter uppercase">Mijozlar Fikri<span class="text-accent">.</span></h2>
+                    <div id="testimonials-container" class="space-y-4 custom-scroll">
+                        </div>
+                </div>
+                
+                <div class="reveal glass p-8 rounded-3xl border-white/5 order-1 md:order-2">
+                    <h4 class="text-xl font-bold mb-6 uppercase tracking-widest">Fikr qoldiring</h4>
+                    <div class="space-y-4">
+                        <input type="text" id="fb-name" placeholder="Ismingizni kiriting" class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-sm focus:border-accent outline-none transition-colors">
+                        <textarea id="fb-text" placeholder="Fikringizni yozing..." rows="4" class="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-sm focus:border-accent outline-none resize-none transition-colors"></textarea>
+                        <button id="fb-send" class="w-full py-4 bg-accent text-white rounded-xl font-bold text-xs uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-accent/20">Fikrni Yuborish</button>
+                    </div>
+                    <p class="text-[10px] text-gray-500 mt-6 text-center italic opacity-60">clear_all</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-32 bg-dark">
+        <div class="container mx-auto px-6">
+            <div class="glass p-8 md:p-20 rounded-[3rem] relative overflow-hidden border-accent/20">
+                <div class="absolute -top-24 -right-24 w-96 h-96 bg-accent/20 rounded-full blur-[100px]"></div>
+                
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div class="reveal">
+                        <h2 class="text-5xl md:text-7xl font-display font-bold mb-8 leading-tight tracking-tighter">
+                            Men bilan <br> <span class="text-accent italic">Boglaning</span>
+                        </h2>
+                        <p class="text-gray-400 mb-10 text-lg max-w-md">
+                            Loyiha bo'yicha savollaringiz bormi yoki hamkorlik taklif qilmoqchimisiz? Menga o'zingizga qulay usulda xabar yuboring.
+                        </p>
+                    </div>
+
+                    <div class="reveal space-y-6">
+                        <a href="tel:+998901234567" class="group flex items-center p-6 glass rounded-2xl border-white/5 hover:border-accent/50 transition-all duration-500">
+                            <div class="w-16 h-16 bg-white/5 rounded-xl flex items-center justify-center text-3xl group-hover:bg-accent group-hover:text-white transition-all">
+                                📞
+                            </div>
+                            <div class="ml-6">
+                                <span class="block text-xs uppercase tracking-widest text-gray-500 mb-1">Qo'ng'iroq qiling</span>
+                                <span class="text-2xl font-display font-bold group-hover:text-accent transition-colors">+998 88 001 67 77</span>
+                            </div>
+                        </a>
+
+                        <a href="https://t.me/otabek_avazbekovich" target="_blank" class="group flex items-center p-6 glass rounded-2xl border-white/5 hover:border-blue-500/50 transition-all duration-500">
+                            <div class="w-16 h-16 bg-white/5 rounded-xl flex items-center justify-center text-3xl group-hover:bg-[#0088cc] group-hover:text-white transition-all">
+                                📲
+                            </div>
+                            <div class="ml-6">
+                                <span class="block text-xs uppercase tracking-widest text-gray-500 mb-1">Telegram orqali yozing</span>
+                                <span class="text-2xl font-display font-bold group-hover:text-[#0088cc] transition-colors">@otabek_avazbekovich</span>
+                            </div>
+                        </a>
+
+                        <div class="pt-6 flex gap-4">
+                            <a href="https://github.com/sizning_profil" target="_blank" class="px-8 py-4 glass rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all">
+                                GitHub Profil
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-white/5">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-gray-600 text-xs tracking-widest uppercase">© 2026 Barcha huquqlar himoyalangan.</p>
+        </div>
+    </footer>
+
+    <script>
+        const lenis = new Lenis();
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+
+        const cursor = document.getElementById('custom-cursor');
+        window.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, { x: e.clientX - 10, y: e.clientY - 10, duration: 0.2, ease: "power2.out" });
+        });
+
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            tl.to("#loader-bar", { x: 0, duration: 1.5, ease: "power4.inOut" })
+              .to("#loader-text", { y: 0, duration: 0.8, ease: "power4.out" }, "-=0.5")
+              .to("#loader", { yPercent: -100, duration: 1, ease: "expo.inOut", delay: 0.5 })
+              .from(".hero-stagger", { y: 50, opacity: 0, duration: 1.2, stagger: 0.15, ease: "power4.out" }, "-=0.3");
+            loadTestimonials();
+        });
+
+        ScrollTrigger.create({
+            start: 'top -80',
+            onEnter: () => { gsap.to("#navbar", { paddingTop: '1rem', paddingBottom: '1rem', backgroundColor: document.body.classList.contains('light') ? 'rgba(249,250,251,0.8)' : 'rgba(5, 5, 5, 0.8)', backdropFilter: 'blur(10px)', duration: 0.4 }); },
+            onLeaveBack: () => { gsap.to("#navbar", { paddingTop: '1.5rem', paddingBottom: '1.5rem', backgroundColor: 'transparent', backdropFilter: 'blur(0px)', duration: 0.4 }); }
+        });
+
+        gsap.registerPlugin(ScrollTrigger);
+        const reveals = document.querySelectorAll('.reveal');
+        reveals.forEach((el) => {
+            gsap.from(el, { scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none reverse" }, y: 60, opacity: 0, duration: 1.5, ease: "power4.out" });
+        });
+
+        document.querySelectorAll('a, button, input, textarea').forEach(el => {
+            el.addEventListener('mouseenter', () => { gsap.to(cursor, { scale: 3, opacity: 0.3, duration: 0.3 }); });
+            el.addEventListener('mouseleave', () => { gsap.to(cursor, { scale: 1, opacity: 1, duration: 0.3 }); });
+        });
+
+        // --- KUN/TUN REJIM TEPADA ---
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light');
+            document.documentElement.classList.toggle('dark');
+            themeToggle.innerText = document.body.classList.contains('light') ? '🌙' : '🌓';
+        });
+
+        // --- FIKR-MULOHAZALAR STORAGE BILAN ---
+        const fbSend = document.getElementById('fb-send');
+        const fbName = document.getElementById('fb-name');
+        const fbText = document.getElementById('fb-text');
+        const fbContainer = document.getElementById('testimonials-container');
+
+        function loadTestimonials() {
+            const data = JSON.parse(localStorage.getItem('my_feedbacks')) || [];
+            fbContainer.innerHTML = '';
+            data.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'glass p-5 rounded-2xl border-white/5 text-sm shadow-sm';
+                div.innerHTML = `<p class="italic opacity-80 leading-relaxed">"${item.text}"</p><p class="mt-3 font-bold text-accent text-[10px] uppercase tracking-tighter">— ${item.name}</p>`;
+                fbContainer.prepend(div);
+            });
+        }
+
+        fbSend.addEventListener('click', () => {
+            const name = fbName.value.trim();
+            const text = fbText.value.trim();
+
+            if(name === "clear_all") {
+                localStorage.removeItem('my_feedbacks');
+                loadTestimonials();
+                fbName.value = ""; fbText.value = "";
+                return;
+            }
+
+            if(name && text) {
+                const data = JSON.parse(localStorage.getItem('my_feedbacks')) || [];
+                data.push({ name, text });
+                localStorage.setItem('my_feedbacks', JSON.stringify(data));
+                loadTestimonials();
+                fbName.value = ""; fbText.value = "";
+                gsap.from(fbContainer.firstChild, { opacity: 0, y: 20, duration: 0.5 });
+            } else {
+                alert("Iltimos, barcha maydonlarni to'ldiring!");
+            }
+        });
+    </script>
+
+
+{% comment %} >>>>>>>>>>>..... {% endcomment %}
+
+
+
+<style>
+    /* Navbar skrol bo'lgandagi holati */
+    #navbar.scrolled {
+        padding-top: 1.25rem;
+        padding-bottom: 1.25rem;
+        background: rgba(5, 5, 5, 0.7);
+        backdrop-filter: blur(20px) saturate(180%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    body.light #navbar.scrolled {
+        background: rgba(249, 250, 251, 0.7);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+</style>
+
+<script>
+    const navbar = document.getElementById('navbar');
+    const navItems = document.querySelectorAll('.nav-item');
+    const indicator = document.getElementById('nav-indicator');
+
+    // 1. Scroll Effect: Navbar o'zgarishi
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+
+    // 2. Nav Indicator (Pill movement): Menyu ustida yurganda pillning harakati
+    navItems.forEach(item => {
+        item.addEventListener('mouseenter', (e) => {
+            const { offsetLeft, offsetWidth, offsetHeight } = e.target;
+            gsap.to(indicator, {
+                left: offsetLeft,
+                width: offsetWidth,
+                height: offsetHeight,
+                opacity: 1,
+                duration: 0.4,
+                ease: "power3.out"
+            });
+        });
+    });
+
+    navbar.querySelector('.md\\:flex').addEventListener('mouseleave', () => {
+        gsap.to(indicator, { opacity: 0, duration: 0.4 });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
